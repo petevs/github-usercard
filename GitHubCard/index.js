@@ -11,6 +11,13 @@ function getGithub(user) {
     .catch((err) => console.log(err));
 }
 
+// function getGithub(user) {
+//   axios
+//     .get("https://api.github.com/users/" + user)
+//     .then(({ data }) => console.log(data))
+//     .catch((err) => console.log(err));
+// }
+
 getGithub("petevs");
 
 /*
@@ -61,10 +68,11 @@ const followersArray = [];
 */
 
 function createCard(obj) {
-  //Create div and add card class
   const cardParent = document.querySelector(".cards");
+  //Create div and add card class
   const div = document.createElement("div");
   div.classList.add("card");
+  //
   //Name
   const name = document.createElement("h3");
   name.classList.add("name");
@@ -76,6 +84,13 @@ function createCard(obj) {
   userName.textContent = `${obj.login}`;
   div.appendChild(userName);
   //location
+  const location = document.createElement("p");
+  location.textContent = `Location: ${obj.location}`;
+  div.appendChild(location);
+  //Profile
+  const profile = document.createElement("p");
+  profile.textContent = "Profile:";
+  div.appendChild(profile);
 
   //Append card to parent
   cardParent.appendChild(div);
