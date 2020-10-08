@@ -4,14 +4,24 @@
     https://api.github.com/users/<your name>
 */
 
+function getGithub(user) {
+  axios
+    .get("https://api.github.com/users/" + user)
+    .then(({ data }) => createCard(data))
+    .catch((err) => console.log(err));
+}
+
+getGithub("petevs");
+
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
     github info! You will need to understand the structure of this
     data in order to use it to build your component function
 
+console.log(getGithub())
+
     Skip to STEP 3.
 */
-
 /*
   STEP 4: Pass the data received from Github into your function,
     and append the returned markup to the DOM as a child of .cards
@@ -49,6 +59,27 @@ const followersArray = [];
       </div>
     </div>
 */
+
+function createCard(obj) {
+  //Create div and add card class
+  const cardParent = document.querySelector(".cards");
+  const div = document.createElement("div");
+  div.classList.add("card");
+  //Name
+  const name = document.createElement("h3");
+  name.classList.add("name");
+  name.textContent = `${obj.name}`;
+  div.appendChild(name);
+  //username
+  const userName = document.createElement("p");
+  userName.classList.add("username");
+  userName.textContent = `${obj.login}`;
+  div.appendChild(userName);
+  //location
+
+  //Append card to parent
+  cardParent.appendChild(div);
+}
 
 /*
   List of LS Instructors Github username's:
