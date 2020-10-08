@@ -4,19 +4,21 @@
     https://api.github.com/users/<your name>
 */
 
+function dataInspector(user) {
+  axios
+    .get("https://api.github.com/users/" + user)
+    .then(({ data }) => console.log(data))
+    .catch((err) => console.log(err));
+}
+
+dataInspector("petevs");
+
 function getGithub(user) {
   axios
     .get("https://api.github.com/users/" + user)
     .then(({ data }) => createCard(data))
     .catch((err) => console.log(err));
 }
-
-// function getGithub(user) {
-//   axios
-//     .get("https://api.github.com/users/" + user)
-//     .then(({ data }) => console.log(data))
-//     .catch((err) => console.log(err));
-// }
 
 getGithub("petevs");
 
@@ -72,25 +74,59 @@ function createCard(obj) {
   //Create div and add card class
   const div = document.createElement("div");
   div.classList.add("card");
-  //
+
+  //Add img
+  const profileImg = document.createElement("img");
+  profileImg.src = `${obj.avatar_url}`;
+  div.appendChild(profileImg);
+
+  //Create div for card info
+  const cardInfo = document.createElement("div");
+  cardInfo.classList.add("card-info");
+  div.appendChild(cardInfo);
+
   //Name
   const name = document.createElement("h3");
   name.classList.add("name");
   name.textContent = `${obj.name}`;
-  div.appendChild(name);
+  cardInfo.appendChild(name);
+
   //username
   const userName = document.createElement("p");
   userName.classList.add("username");
   userName.textContent = `${obj.login}`;
-  div.appendChild(userName);
+  cardInfo.appendChild(userName);
+
   //location
   const location = document.createElement("p");
   location.textContent = `Location: ${obj.location}`;
-  div.appendChild(location);
+  cardInfo.appendChild(location);
+
   //Profile
   const profile = document.createElement("p");
-  profile.textContent = "Profile:";
-  div.appendChild(profile);
+  profile.textContent = "Profile: ";
+  cardInfo.appendChild(profile);
+
+  //a href to profile
+  const pageAddress = document.createElement("a");
+  pageAddress.href = obj.avatar_url;
+  pageAddress.textContent = obj.avatar_url;
+  profile.appendChild(pageAddress);
+
+  //Followers
+  const followers = document.createElement("p");
+  followers.textContent = `Followers: ${obj.followers}`;
+  cardInfo.appendChild(followers);
+
+  //Following
+  const following = document.createElement("p");
+  following.textContent = `Following: ${obj.following}`;
+  cardInfo.appendChild(following);
+
+  //Bio
+  const bio = document.createElement("p");
+  bio.textContent = `Bio: ${obj.bio}`;
+  cardInfo.appendChild(bio);
 
   //Append card to parent
   cardParent.appendChild(div);
