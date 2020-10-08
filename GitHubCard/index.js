@@ -4,14 +4,33 @@
     https://api.github.com/users/<your name>
 */
 
+function dataInspector(user) {
+  axios
+    .get("https://api.github.com/users/" + user)
+    .then(({ data }) => console.log(data))
+    .catch((err) => console.log(err));
+}
+
+dataInspector("petevs");
+
+function getGithub(user) {
+  axios
+    .get("https://api.github.com/users/" + user)
+    .then(({ data }) => createCard(data))
+    .catch((err) => console.log(err));
+}
+
+getGithub("petevs");
+
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
     github info! You will need to understand the structure of this
     data in order to use it to build your component function
 
+console.log(getGithub())
+
     Skip to STEP 3.
 */
-
 /*
   STEP 4: Pass the data received from Github into your function,
     and append the returned markup to the DOM as a child of .cards
@@ -28,7 +47,16 @@
     user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = [
+  "tetondan",
+  "dustinmyers",
+  "justsml",
+  "luishrd",
+  "bigknell",
+];
+
+//Create a card for each user in followersArray
+followersArray.forEach((follower) => getGithub(follower));
 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
@@ -49,6 +77,69 @@ const followersArray = [];
       </div>
     </div>
 */
+
+function createCard(obj) {
+  const cardParent = document.querySelector(".cards");
+  //Create div and add card class
+  const div = document.createElement("div");
+  div.classList.add("card");
+
+  //Add img
+  const profileImg = document.createElement("img");
+  profileImg.src = `${obj.avatar_url}`;
+  div.appendChild(profileImg);
+
+  //Create div for card info
+  const cardInfo = document.createElement("div");
+  cardInfo.classList.add("card-info");
+  div.appendChild(cardInfo);
+
+  //Name
+  const name = document.createElement("h3");
+  name.classList.add("name");
+  name.textContent = `${obj.name}`;
+  cardInfo.appendChild(name);
+
+  //username
+  const userName = document.createElement("p");
+  userName.classList.add("username");
+  userName.textContent = `${obj.login}`;
+  cardInfo.appendChild(userName);
+
+  //location
+  const location = document.createElement("p");
+  location.textContent = `Location: ${obj.location}`;
+  cardInfo.appendChild(location);
+
+  //Profile
+  const profile = document.createElement("p");
+  profile.textContent = "Profile: ";
+  cardInfo.appendChild(profile);
+
+  //a href to profile
+  const pageAddress = document.createElement("a");
+  pageAddress.href = obj.avatar_url;
+  pageAddress.textContent = obj.avatar_url;
+  profile.appendChild(pageAddress);
+
+  //Followers
+  const followers = document.createElement("p");
+  followers.textContent = `Followers: ${obj.followers}`;
+  cardInfo.appendChild(followers);
+
+  //Following
+  const following = document.createElement("p");
+  following.textContent = `Following: ${obj.following}`;
+  cardInfo.appendChild(following);
+
+  //Bio
+  const bio = document.createElement("p");
+  bio.textContent = `Bio: ${obj.bio}`;
+  cardInfo.appendChild(bio);
+
+  //Append card to parent
+  cardParent.appendChild(div);
+}
 
 /*
   List of LS Instructors Github username's:
